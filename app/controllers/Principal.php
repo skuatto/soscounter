@@ -25,18 +25,19 @@ class Principal extends Controller
 	{
 		$view->assign('urlbuilder', $this->urlBuilder);
 		$view->assign('session', $this->session);
-		
+
 		return $view->create('principal');
 	}
 
 	public function incrementar_contador(ViewFactory $view)
 	{	
 
-		$veces = 1;
 
-		if($this->request->post('veces',false) == false)
+		$veces = 1;
+		$contador = new Contador();
+		if($this->request->post('veces',false) != false)
 		{
-			$veces = $contador->veces;
+			$veces = $this->request->post('veces');
 		}
 
 		$contador->ip   = $this->request->ip();
@@ -45,7 +46,7 @@ class Principal extends Controller
 		$contador->fecha =  new Time('now', 'Europe/Paris');
 		$contador->save();
 		
-		$this->session->putFlash('success', 'The article has successfully been deleted!');
+		$this->session->putFlash('success', 'Se ha incrementado el contador correctamente !!');
 		return $this->response->redirect($this->urlBuilder->toRoute('index'));
 		//$ip = 
 	}

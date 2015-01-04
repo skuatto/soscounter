@@ -32,9 +32,9 @@ return
 	[
 		'test' => 
 		[
-			'dsn'         => 'mysql:dbname=test;host=localhost;port=3306',
-			'username'    => 'username',
-			'password'    => 'password',
+			'dsn'         => 'mysql:dbname=soscounter;host=localhost;port=3306',
+			'username'    => 'root',
+			'password'    => '',
 			'persistent'  => false,
 			'log_queries' => false,
 			'reconnect'   => false,

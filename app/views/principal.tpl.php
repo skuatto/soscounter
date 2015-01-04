@@ -1,6 +1,6 @@
 {% extends:'parent_layout' %}
 {% block:contenido %}
-	{% if ($this->session->hasFlash('success')) %}
+	{% if ($session->hasFlash('success')) %}
 	<div class="alert alert-success" role="alert">
 		{{ $session->getFlash('success') }}
 	</div>	
