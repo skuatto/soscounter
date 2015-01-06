@@ -21,7 +21,7 @@ class Contador extends ORM
 
     public function vecesPorDia()
     {
-    	return Contador::select([ new Raw('SUM(veces) as cantidad'), new Raw('DATE(fecha) as fecha')])
+    	return Contador::select([ new Raw('SUM(veces) as cantidad'), 'fecha'])
 						->groupBy(new Raw('DATE(fecha)'))
 						->orderBy('fecha','asc')
 						->all();
