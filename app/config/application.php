@@ -138,7 +138,7 @@ return
 		'mako\application\services\CryptoService',
 		'mako\application\services\ValidatorFactoryService',
 		'mako\application\services\PaginationFactoryService',
-		'mako\application\services\GatekeeperService',
+		'mako\application\services\GatekeeperService'
 	],
 
 	/**

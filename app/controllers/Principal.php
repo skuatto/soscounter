@@ -12,6 +12,8 @@ use \app\models\Contador;
 use \app\models\User;
 use \mako\utility\Humanizer;
 use \mako\chrono\Time;
+use \mako\database\query\Raw;
+use \app\helpers\DatabaseHelper;
 
 class Principal extends Controller
 {
@@ -21,25 +23,34 @@ class Principal extends Controller
 	 * @access  public
 	 */
 
-	public function index(ViewFactory $view)
+	public function index( ViewFactory $view )
 	{
 		$view->assign('urlbuilder', $this->urlBuilder);
 		$view->assign('session', $this->session);
 
+		$contador = new Contador();
+		$contadores = $contador->vecesPorDia();
+		$contadores = DatabaseHelper::add_cont($contadores);
+
+		$view->assign('contadores',$contadores);	
+		$view->assign('databaseHelper',new DatabaseHelper());	
+
 		return $view->create('principal');
 	}
 
-	public function incrementar_contador(ViewFactory $view)
+	public function incrementar_contador( ViewFactory $view )
 	{	
-
-
 		$veces = 1;
+		$idusuario = 99; // anonimo
 		$contador = new Contador();
-		if($this->request->post('veces',false) != false)
-		{
-			$veces = $this->request->post('veces');
-		}
 
+		if ( $this->request->post('veces',false) != false )
+			$veces = $this->request->post('veces');
+		
+		if ( $this->session->has('idusuario') )
+			$idusuario = $this->session->get('idusuario');
+
+		$contador->idusuario = $idusuario;
 		$contador->ip   = $this->request->ip();
 		$contador->veces 	= $veces;
 		$contador->comentario   = $this->request->post('comentario');
@@ -51,23 +62,33 @@ class Principal extends Controller
 		//$ip = 
 	}
 
-	public function login(ViewFactory $view)
+	public function login( ViewFactory $view )
 	{	
-		$this->viewFactory->assign('urlbuilder', $this->urlBuilder);
-		$this->viewFactory->assign('session', $this->session);
+		$view->assign('urlbuilder', $this->urlBuilder);
+		$view->assign('session', $this->session);
 
-		$view = $this->viewFactory->create('login');
-		return $view->render();
+		return $view->create('login');
 		//$ip = 
 	}
 
-	public function loguearse(ViewFactory $view)
+	public function loguearse( ViewFactory $view )
 	{	
-		return $this->response->redirect($this->urlBuilder->toRoute('index'));
+		$user = new User();
+		if ( $idusuario = $user->login( $this->request->post('username'), $this->request->post('password') ) != false )
+		{
+			$this->session->put('username', $this->request->post('username'));
+			$this->session->put('idusuario', $idusuario);
+			return $this->response->redirect($this->urlBuilder->toRoute('index'));
+		}	
+		else
+		{
+			$this->session->putFlash('fail', 'El usuario y la contraseña no coinciden');
+			return $this->response->redirect($this->urlBuilder->toRoute('login'));
+		}
 	}
-	public function logout(ViewFactory $view)
+	public function logout( ViewFactory $view )
 	{	
-
+		$this->session->destroy();
 		return $this->response->redirect($this->urlBuilder->toRoute('index'));
 	}
 }

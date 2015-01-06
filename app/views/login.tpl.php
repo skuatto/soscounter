@@ -1,5 +1,10 @@
 {% extends:'parent_layout' %}
 {% block:contenido %}
+	{% if($session->hasFlash('fail')) %}
+		<div class="alert alert-danger" >
+			{{ $session->getFlash('fail') }}
+		</div>
+	{% endif %}
 	<article class="jumbotron">
 		<header>
 			<form action="{{$urlbuilder->toRoute('loguearse')}}" method="post">

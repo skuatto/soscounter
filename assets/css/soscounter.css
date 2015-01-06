@@ -4,10 +4,7 @@ html,
     height: 100%;
     /* The html and body elements cannot have any padding or margin. */
   }
-footer
-{
-	margin-bottom: 10px;
-}
+
 
 footer a
 {
@@ -21,6 +18,7 @@ footer a:hover
 
 footer
 {
+  margin-top: 10px;
 	background : #eee;
 	background-image: url('../img/stripes.png');
 	background-size: 10px 10px;
@@ -29,10 +27,10 @@ footer
    #wrap {
         min-height: 100%;
         height: auto !important;
-        height: 100%;
+
         /* Negative indent footer by it's height */
-        margin: 0 auto -60px;
-        padding: 0 0 -6px 0;
+        margin: 0 auto -66px 0;
+        padding: 0 0 0 0;
       }
 .clear{ clear: both;}
 
@@ -42,3 +40,7 @@ footer
 .mt30{ margin-top: 30px;}
 .mt40{ margin-top: 40px;}
 .mt50{ margin-top: 50px;}
+
+.jumbotron{
+  padding: 30px 40px 30px 40px;
+}
